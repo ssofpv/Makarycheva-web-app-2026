@@ -1,0 +1,122 @@
+<<<<<<< HEAD
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-10">
+        <article class="text-center mb-5">
+            <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+            <div class="text-muted fst-italic mb-3">
+                {{ post.author }}, {{ post.date.strftime('%d.%m.%Y') }}
+            </div>
+            
+            <figure class="mb-5 d-flex justify-content-center">
+                <img class="img-fluid rounded border" 
+                     src="{{ url_for('static', filename='images/' + post.image_id) }}" 
+                     alt="{{ post.title }}"
+                     style="max-height: 500px; width: auto;" />
+            </figure>
+            
+            <section class="mb-5 px-md-5">
+                <p class="fs-5 text-start" style="white-space: pre-wrap; text-align: justify !important;">
+                    {{ post.text }}
+                </p>
+            </section>
+        </article>
+
+        <section class="mb-5">
+            <div class="card bg-light mb-4">
+                <div class="card-header fw-bold">Оставьте комментарий</div>
+                <div class="card-body">
+                    <form>
+                        <textarea class="form-control mb-2" rows="4"></textarea>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+            </div>
+
+            {% for comment in post.comments %}
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <img class="rounded-circle" 
+                         src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" 
+                         alt="Avatar" />
+                </div>
+                <div class="ms-3 w-100">
+                    <div class="fw-bold">{{ comment.author }}</div>
+                    <p class="mb-2">{{ comment.text }}</p>
+
+                    {% if comment.replies %}
+                        {% for reply in comment.replies %}
+                        <div class="d-flex mt-4">
+                            <div class="flex-shrink-0">
+                                <img class="rounded-circle" 
+                                     src="https://dummyimage.com/50x50/e0e0e0/8a8a8a.jpg" 
+                                     alt="Avatar" />
+                            </div>
+                            <div class="ms-3">
+                                <div class="fw-bold">{{ reply.author }}</div>
+                                <p class="mb-0">{{ reply.text }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+=======
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <h1 class="display-4">{{ post.title }}</h1>
+        <p class="text-muted">{{ post.author }}, {{ post.date.strftime('%d.%m.%Y') }}</p>
+        
+        <img src="{{ url_for('static', filename='images/' + post.image) }}" class="img-fluid rounded mb-4 w-100" alt="Post Image">
+        
+        <div class="lead mb-5" style="text-align: justify;">
+            {{ post.text }}
+        </div>
+
+        <div class="card bg-light mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Оставьте комментарий</h5>
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+
+        <h4 class="mb-4">Комментарии</h4>
+        {% for comment in post.comments %}
+        <div class="media mb-4">
+            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mr-3" style="width: 50px; height: 50px;">
+                {{ comment.author[0] }}
+            </div>
+            <div class="media-body">
+                <h5 class="mt-0">{{ comment.author }}</h5>
+                <p>{{ comment.text }}</p>
+
+                {% for reply in comment.replies %}
+                <div class="media mt-4">
+                    <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center mr-3" style="width: 50px; height: 50px;">
+                        {{ reply.author[0] }}
+                    </div>
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ reply.author }}</h5>
+                        <p>{{ reply.text }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+>>>>>>> e4ecf103fabf75370ed57082727088c4086b4bda
+    </div>
+</div>
+{% endblock %}
