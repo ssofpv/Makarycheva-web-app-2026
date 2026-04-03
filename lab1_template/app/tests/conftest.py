@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from datetime import datetime
 import pytest
 from flask import template_rendered
@@ -37,15 +36,3 @@ def posts_list():
             'comments': []
         }
     ]
-=======
-import pytest
-from app import app as flask_app
-
-@pytest.fixture
-def app():
-    yield flask_app
-
-@pytest.fixture
-def client(app):
-    return app.test_client()
->>>>>>> e4ecf103fabf75370ed57082727088c4086b4bda
