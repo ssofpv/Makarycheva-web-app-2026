@@ -27,7 +27,8 @@ class User(UserMixin):
         self.id = user_data['id']
         self.login = user_data['login']
         self.role_id = user_data['role_id']
-        self.role_name = user_data.get('role_name')
+        # Безопасное получение role_name
+        self.role_name = user_data['role_name'] if 'role_name' in user_data else None
 
 @login_manager.user_loader
 def load_user(user_id):

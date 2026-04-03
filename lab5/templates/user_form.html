@@ -46,8 +46,8 @@
             </div>
             
             <div class="mb-3">
-                <label class="form-label">Роль {% if not is_admin %}(недоступно для изменения){% endif %} *</label>
-                <select name="role_id" class="form-control {% if errors.role_id %}is-invalid{% endif %}" {% if not is_admin %}disabled{% endif %}>
+                <label class="form-label">Роль *</label>
+                <select name="role_id" class="form-control {% if errors.role_id %}is-invalid{% endif %}" required>
                     <option value="">Выберите роль</option>
                     {% for role in roles %}
                         <option value="{{ role.id }}" {% if form_data.role_id|string == role.id|string %}selected{% endif %}>
@@ -55,9 +55,6 @@
                         </option>
                     {% endfor %}
                 </select>
-                {% if not is_admin %}
-                    <input type="hidden" name="role_id" value="{{ form_data.role_id or '' }}">
-                {% endif %}
                 {% if errors.role_id %}
                     <div class="invalid-feedback">{{ errors.role_id }}</div>
                 {% endif %}
