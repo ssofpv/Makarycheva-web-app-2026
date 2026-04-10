@@ -2,8 +2,11 @@ import os
 
 SECRET_KEY = 'secret-key'
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///project.db'
-# SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://user:password@std-mysql.ist.mospolytech.ru/db_name'
+# Получаем абсолютный путь к папке instance
+basedir = os.path.abspath(os.path.dirname(__file__))
+instance_path = os.path.join(basedir, '..', 'instance')
+
+SQLALCHEMY_DATABASE_URI = f'sqlite:///{os.path.join(instance_path, "project.db")}'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 

@@ -1,4 +1,4 @@
-from app.models import Course
+from ..models import Course
 
 class CourseRepository:
     def __init__(self, db):
@@ -45,6 +45,6 @@ class CourseRepository:
             self.db.session.commit()
         except Exception as e:
             self.db.session.rollback()
-            raise e  # Пробрасываем любое другое исключение
+            raise e
         
         return course

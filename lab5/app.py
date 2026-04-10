@@ -6,7 +6,7 @@ import re
 from auth import check_rights
 from reports import reports_bp
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/lab5/static')
 app.secret_key = 'your-secret-key-here-change-in-production'
 app.config['PER_PAGE'] = 20
 

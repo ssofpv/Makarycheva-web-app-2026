@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, send_from_directory, current_app, abort
-from app.repositories import CategoryRepository, ImageRepository
-from app.models import db
+from .repositories import CategoryRepository, ImageRepository
+from .models import db
 
 category_repository = CategoryRepository(db)
 image_repository = ImageRepository(db)
@@ -18,7 +18,7 @@ def index():
 @bp.route('/images/<image_id>')
 def image(image_id):
     img = image_repository.get_by_id(image_id)
-    if image is None:
+    if img is None:
         abort(404)
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'],
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],  
                                img.storage_filename)

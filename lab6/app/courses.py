@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from sqlalchemy.exc import IntegrityError
 
-from app.models import db
-from app.repositories import CourseRepository, UserRepository, CategoryRepository, ImageRepository, ReviewRepository
+from .models import db
+from .repositories import CourseRepository, UserRepository, CategoryRepository, ImageRepository, ReviewRepository
 
 user_repository = UserRepository(db)
 course_repository = CourseRepository(db)
@@ -11,7 +11,8 @@ category_repository = CategoryRepository(db)
 image_repository = ImageRepository(db)
 review_repository = ReviewRepository(db)
 
-bp = Blueprint('courses', __name__, url_prefix='/courses')
+# Убираем url_prefix, так как он будет добавлен в main_app.py
+bp = Blueprint('courses', __name__)
 
 COURSE_PARAMS = [
     'author_id', 'name', 'category_id', 'short_desc', 'full_desc'
@@ -79,10 +80,7 @@ def show(course_id):
     if course is None:
         abort(404)
     
-    # Получаем последние 5 отзывов
     recent_reviews = review_repository.get_recent_reviews(course_id, limit=5)
-    
-    # Проверяем, оставил ли текущий пользователь отзыв
     user_review = None
     if current_user.is_authenticated:
         user_review = review_repository.get_user_review_for_course(course_id, current_user.id)
@@ -98,16 +96,13 @@ def reviews(course_id):
     if course is None:
         abort(404)
     
-    # Параметры сортировки и пагинации
     sort_by = request.args.get('sort', 'newest')
     page = request.args.get('page', 1, type=int)
     per_page = 10
     
-    # Получаем отзывы
     pagination = review_repository.get_reviews_by_course(course_id, sort_by, page, per_page)
     reviews_list = pagination.items
     
-    # Проверяем, оставил ли текущий пользователь отзыв
     user_review = None
     if current_user.is_authenticated:
         user_review = review_repository.get_user_review_for_course(course_id, current_user.id)
@@ -126,7 +121,6 @@ def create_review(course_id):
     if course is None:
         abort(404)
     
-    # Проверяем, не оставлял ли пользователь уже отзыв
     existing_review = review_repository.get_user_review_for_course(course_id, current_user.id)
     if existing_review:
         flash('Вы уже оставили отзыв на этот курс.', 'warning')
@@ -135,7 +129,6 @@ def create_review(course_id):
     rating = request.form.get('rating', type=int)
     text = request.form.get('text', '').strip()
     
-    # Валидация
     if rating is None or rating < 0 or rating > 5:
         flash('Некорректная оценка.', 'danger')
         return redirect(url_for('courses.show', course_id=course_id))

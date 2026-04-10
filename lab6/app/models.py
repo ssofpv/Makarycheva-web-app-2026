@@ -69,7 +69,7 @@ class Course(Base):
     rating_num: Mapped[int] = mapped_column(default=0)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
     author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    background_image_id: Mapped[str] = mapped_column(ForeignKey("images.id"))
+    background_image_id: Mapped[Optional[str]] = mapped_column(ForeignKey("images.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now)
 
     author: Mapped["User"] = relationship()
@@ -110,7 +110,6 @@ class Image(db.Model):
         return url_for('main.image', image_id=self.id)
 
 
-# ============ МОДЕЛЬ REVIEW ДЛЯ ОТЗЫВОВ ============
 class Review(Base):
     __tablename__ = 'reviews'
 
@@ -121,7 +120,6 @@ class Review(Base):
     course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
-    # Отношения
     course: Mapped["Course"] = relationship(backref="reviews")
     user: Mapped["User"] = relationship(backref="reviews")
 

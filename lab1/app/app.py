@@ -5,7 +5,7 @@ from faker import Faker
 
 fake = Faker()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/lab1/static')
 application = app
 
 images_ids = [

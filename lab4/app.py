@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import models
 import re
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/lab4/static')
 app.secret_key = 'your-secret-key-here-change-in-production'
 
 # Инициализация базы данных

@@ -1,4 +1,4 @@
-from app.models import Review
+from ..models import Review
 from sqlalchemy import desc, asc
 
 class ReviewRepository:
@@ -6,7 +6,6 @@ class ReviewRepository:
         self.db = db
 
     def get_reviews_by_course(self, course_id, sort_by='newest', page=1, per_page=10):
-        """Получение отзывов для курса с пагинацией и сортировкой"""
         query = self.db.select(Review).where(Review.course_id == course_id)
         
         if sort_by == 'newest':
@@ -19,12 +18,10 @@ class ReviewRepository:
         return self.db.paginate(query, page=page, per_page=per_page)
 
     def get_recent_reviews(self, course_id, limit=5):
-        """Получение последних 5 отзывов"""
         query = self.db.select(Review).where(Review.course_id == course_id).order_by(desc(Review.created_at)).limit(limit)
         return self.db.session.execute(query).scalars().all()
 
     def get_user_review_for_course(self, course_id, user_id):
-        """Получение отзыва пользователя для курса"""
         query = self.db.select(Review).where(
             Review.course_id == course_id,
             Review.user_id == user_id
@@ -32,8 +29,7 @@ class ReviewRepository:
         return self.db.session.execute(query).scalar_one_or_none()
 
     def add_review(self, course_id, user_id, rating, text):
-        """Добавление нового отзыва и обновление рейтинга курса"""
-        from app.models import Course
+        from ..models import Course
         
         review = Review(
             course_id=course_id,
@@ -42,7 +38,6 @@ class ReviewRepository:
             text=text
         )
         
-        # Обновляем рейтинг курса
         course = self.db.session.get(Course, course_id)
         if course:
             course.rating_sum += rating
